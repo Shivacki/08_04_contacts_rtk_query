@@ -4,14 +4,14 @@ import { useDispatch } from 'react-redux';
 import { ThunkDispatch } from "redux-thunk";
 // import type { ThunkAction, UnknownAction } from '@reduxjs/toolkit';
 
-import { contactsSlice } from './contacts'
+import { contactsSlice, contactsApiSlice } from './contacts'
 import { groupsSlice } from './groups'
 
 
 const rootReducer = combineReducers({
   contacts: contactsSlice.reducer,
   groups: groupsSlice.reducer,
-  // groups: groupsReducer,
+  [contactsApiSlice.reducerPath]: contactsApiSlice.reducer,
 });
 
 // Определение RootState на основе корневого редьюсера
@@ -22,8 +22,7 @@ export const store = configureStore({
   reducer: rootReducer,
   devTools: true,
   // Формируем список middleware
-  // ... thunk из redux-thunk (для выполнения асинхр. запросов в экосистеме redux) уже есть в списке default-middleware
-  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(contactsApiSlice.middleware),
 });
 
 

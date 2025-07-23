@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import { useSelector } from 'react-redux'
 import { selectContactsData, selectContactsError, selectContactsIsLoading } from 'src/store/contacts'
+import { useGetContactsQuery } from 'src/store/contacts';
 import { selectGroupsData } from 'src/store/groups'
 import {Col, Row} from 'react-bootstrap';
 import {ContactCard} from 'src/components/ContactCard';
@@ -12,23 +13,25 @@ import { GroupContactsDto } from 'src/types/dto/GroupContactsDto';
 export const ContactListPage = () => {
   
   // console.log('render ContactListPage');
-  
-  const contactsDataStore: ContactDto[] = useSelector(selectContactsData);
+
+  // Получаем данные с пом. rtk query (без использования обычных redux-селекторов), включая встроенные флаги загрузки данных и значения ошибок, переименовывая необх. поля при деструктуризации
+  const { data: contactsDataStore, isLoading, error } = useGetContactsQuery();
+  // const contactsDataStore: ContactDto[] = useSelector(selectContactsData);
   // console.log('ContactListPage contactsDataStore: ', contactsDataStore);
 
-  const isLoading = useSelector(selectContactsIsLoading);
-  const error = useSelector(selectContactsError);
+  // const isLoading = useSelector(selectContactsIsLoading);
+  // const error = useSelector(selectContactsError);
 
   const groupsDataStore: GroupContactsDto[] = useSelector(selectGroupsData);
   
 
-  const [contacts, setContacts] = useState<ContactDto[]>(contactsDataStore);
+  const [contacts, setContacts] = useState<ContactDto[] | undefined>(contactsDataStore);
   const onSubmit = (fv: Partial<FilterFormValues>) => {
-    let findContacts: ContactDto[] = contactsDataStore;
+    let findContacts: ContactDto[] | undefined = contactsDataStore;
 
     if (fv.name) {
       const fvName = fv.name.toLowerCase();
-      findContacts = findContacts.filter(({name}) => (
+      findContacts = findContacts?.filter(({name}) => (
         name.toLowerCase().indexOf(fvName) > -1
       ))
     }
@@ -37,7 +40,7 @@ export const ContactListPage = () => {
       const groupContacts = groupsDataStore.find(({id}) => id === fv.groupId);
 
       if (groupContacts) {
-        findContacts = findContacts.filter(({id}) => (
+        findContacts = findContacts?.filter(({id}) => (
           groupContacts.contactIds.includes(id)
         ))
       }
@@ -66,7 +69,7 @@ export const ContactListPage = () => {
       </Col>
       <Col>
         <Row xxl={4} className="g-4">
-          {contacts.map((contact) => (
+          {contacts?.map((contact) => (
             <Col key={contact.id}>
               <ContactCard contact={contact} withLink />
             </Col>
