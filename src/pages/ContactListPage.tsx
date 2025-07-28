@@ -1,14 +1,11 @@
 import {useState, useEffect} from 'react';
-import { useSelector } from 'react-redux'
-// import { selectContactsData, selectContactsError, selectContactsIsLoading } from 'src/store/contacts'
-// import { selectGroupsData } from 'src/store/groups'
 import { useGetContactsQuery } from 'src/store/contacts';
 import { useGetGroupsQuery } from 'src/store/groups';
 import {Col, Row} from 'react-bootstrap';
 import {ContactCard} from 'src/components/ContactCard';
 import {FilterForm, FilterFormValues} from 'src/components/FilterForm';
 import {ContactDto} from 'src/types/dto/ContactDto';
-import { GroupContactsDto } from 'src/types/dto/GroupContactsDto';
+// import { GroupContactsDto } from 'src/types/dto/GroupContactsDto';
 
 
 export const ContactListPage = () => {
@@ -17,14 +14,7 @@ export const ContactListPage = () => {
 
   // Получаем данные с пом. rtk query (без использования обычных redux-селекторов), включая встроенные флаги загрузки данных и значения ошибок, переименовывая необх. поля при деструктуризации
   const { data: contactsDataStore, isLoading, error } = useGetContactsQuery();
-  // const contactsDataStore: ContactDto[] = useSelector(selectContactsData);
-  // console.log('ContactListPage contactsDataStore: ', contactsDataStore);
-
-  // const isLoading = useSelector(selectContactsIsLoading);
-  // const error = useSelector(selectContactsError);
-
   const { data: groupsDataStore } = useGetGroupsQuery();
-  // const groupsDataStore: GroupContactsDto[] = useSelector(selectGroupsData);
   
 
   const [contacts, setContacts] = useState<ContactDto[] | undefined>(contactsDataStore);

@@ -1,7 +1,4 @@
 import React, {useEffect, useState} from 'react';
-// import { useSelector } from 'react-redux'
-// import { selectContactsData } from 'src/store/contacts'
-// import { selectGroupsData } from 'src/store/groups'
 import { useGetContactsQuery } from 'src/store/contacts';
 import { useGetGroupsQuery } from 'src/store/groups';
 import {Col, Row} from 'react-bootstrap';
@@ -20,8 +17,6 @@ export const GroupPage = () => {
 
   const { data: contactsDataStore } = useGetContactsQuery();
   const { data: groupsDataStore } = useGetGroupsQuery();
-  // const contactsDataStore: ContactDto[] = useSelector(selectContactsData);
-  // const groupsDataStore: GroupContactsDto[] = useSelector(selectGroupsData);
 
 
   useEffect(() => {

@@ -1,6 +1,4 @@
-import React, {useEffect, useState} from 'react';
-// import { useSelector } from 'react-redux'
-// import { selectContactsData, selectFavorites } from 'src/store/contacts'
+import React, {useEffect, useState, useMemo} from 'react';
 import { useGetContactsQuery } from 'src/store/contacts';
 import {Col, Row} from 'react-bootstrap';
 import {ContactCard} from 'src/components/ContactCard';
@@ -12,11 +10,10 @@ export const FavoritListPage = () => {
   const [contacts, setContacts] = useState<ContactDto[] | undefined>([])
   const { data: contactsDataStore } = useGetContactsQuery();
   // список Избранных контактов всегда фиксированный
-  const favoritesDataStore: FavoriteContactsDto = (!!contactsDataStore && contactsDataStore.length > 3) 
+  const favoritesDataStore: FavoriteContactsDto = useMemo(() => (!!contactsDataStore && contactsDataStore.length > 3) 
     ? [contactsDataStore[0].id, contactsDataStore[1].id, contactsDataStore[2].id, contactsDataStore[3].id]
-    : [];
-  // const contactsDataStore: ContactDto[] = useSelector(selectContactsData);
-  // const favoritesDataStore: FavoriteContactsDto = useSelector(selectFavorites);
+    : [], 
+  [contactsDataStore]);
 
   
   useEffect(() => {

@@ -4,13 +4,11 @@ import { useDispatch } from 'react-redux';
 import { ThunkDispatch } from "redux-thunk";
 // import type { ThunkAction, UnknownAction } from '@reduxjs/toolkit';
 
-import { contactsSlice, contactsApiSlice } from './contacts'
-import { groupsSlice, groupsApiSlice } from './groups'
+import { contactsApiSlice } from './contacts'
+import { groupsApiSlice } from './groups'
 
 
 const rootReducer = combineReducers({
-  contacts: contactsSlice.reducer,
-  groups: groupsSlice.reducer,
   [contactsApiSlice.reducerPath]: contactsApiSlice.reducer,
   [groupsApiSlice.reducerPath]: groupsApiSlice.reducer,
 });
@@ -28,6 +26,7 @@ export const store = configureStore({
 
 
 // Создаем хук для доступа к dispatch с правильной типизацией
+// При исп-ии rtk-query (см. createApi) в хранилище все же м.б. другие редьюсеры на базе rtk-Slices (см. createSlice), например для выполнения обычных синхронных Action
 export const useAppDispatch = useDispatch<ThunkDispatch<RootState, void, Action>>  // или UnknownAction из @reduxjs/toolkit
 
 // Альтернативы:
