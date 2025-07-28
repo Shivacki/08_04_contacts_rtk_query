@@ -1,8 +1,9 @@
 import {useState, useEffect} from 'react';
 import { useSelector } from 'react-redux'
-import { selectContactsData, selectContactsError, selectContactsIsLoading } from 'src/store/contacts'
+// import { selectContactsData, selectContactsError, selectContactsIsLoading } from 'src/store/contacts'
+// import { selectGroupsData } from 'src/store/groups'
 import { useGetContactsQuery } from 'src/store/contacts';
-import { selectGroupsData } from 'src/store/groups'
+import { useGetGroupsQuery } from 'src/store/groups';
 import {Col, Row} from 'react-bootstrap';
 import {ContactCard} from 'src/components/ContactCard';
 import {FilterForm, FilterFormValues} from 'src/components/FilterForm';
@@ -22,7 +23,8 @@ export const ContactListPage = () => {
   // const isLoading = useSelector(selectContactsIsLoading);
   // const error = useSelector(selectContactsError);
 
-  const groupsDataStore: GroupContactsDto[] = useSelector(selectGroupsData);
+  const { data: groupsDataStore } = useGetGroupsQuery();
+  // const groupsDataStore: GroupContactsDto[] = useSelector(selectGroupsData);
   
 
   const [contacts, setContacts] = useState<ContactDto[] | undefined>(contactsDataStore);
@@ -37,7 +39,7 @@ export const ContactListPage = () => {
     }
 
     if (fv.groupId) {
-      const groupContacts = groupsDataStore.find(({id}) => id === fv.groupId);
+      const groupContacts = groupsDataStore?.find(({id}) => id === fv.groupId);
 
       if (groupContacts) {
         findContacts = findContacts?.filter(({id}) => (
@@ -65,7 +67,7 @@ export const ContactListPage = () => {
   return (
     <Row xxl={1}>
       <Col className="mb-3">
-        <FilterForm groupContactsList={groupsDataStore} initialValues={{}} onSubmit={onSubmit} />
+        <FilterForm groupContactsList={groupsDataStore || []} initialValues={{}} onSubmit={onSubmit} />
       </Col>
       <Col>
         <Row xxl={4} className="g-4">

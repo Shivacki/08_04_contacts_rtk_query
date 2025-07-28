@@ -5,13 +5,14 @@ import { ThunkDispatch } from "redux-thunk";
 // import type { ThunkAction, UnknownAction } from '@reduxjs/toolkit';
 
 import { contactsSlice, contactsApiSlice } from './contacts'
-import { groupsSlice } from './groups'
+import { groupsSlice, groupsApiSlice } from './groups'
 
 
 const rootReducer = combineReducers({
   contacts: contactsSlice.reducer,
   groups: groupsSlice.reducer,
   [contactsApiSlice.reducerPath]: contactsApiSlice.reducer,
+  [groupsApiSlice.reducerPath]: groupsApiSlice.reducer,
 });
 
 // Определение RootState на основе корневого редьюсера
@@ -22,7 +23,7 @@ export const store = configureStore({
   reducer: rootReducer,
   devTools: true,
   // Формируем список middleware
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(contactsApiSlice.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(contactsApiSlice.middleware, groupsApiSlice.middleware),
 });
 
 

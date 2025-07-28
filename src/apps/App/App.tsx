@@ -12,6 +12,7 @@ import { fetchGroupsAsyncThunk } from 'src/store/groups/groupsActions'
 
 export const App = () => {
 
+  /*
   const dispatch = useAppDispatch();
   
   useEffect(() => {
@@ -23,6 +24,7 @@ export const App = () => {
     // ... Группы контактов
     dispatch(fetchGroupsAsyncThunk());
   }, [dispatch])
+  */
 
 
   return (

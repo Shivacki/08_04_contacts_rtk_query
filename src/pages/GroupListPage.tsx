@@ -1,6 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux'
-import { selectGroupsData, selectGroupsError, selectGroupsIsLoading } from 'src/store/groups'
+// import { useSelector } from 'react-redux'
+// import { selectGroupsData, selectGroupsError, selectGroupsIsLoading } from 'src/store/groups'
+import { useGetGroupsQuery } from 'src/store/groups';
 import {Col, Row} from 'react-bootstrap';
 import {GroupContactsCard} from 'src/components/GroupContactsCard';
 import { GroupContactsDto } from 'src/types/dto/GroupContactsDto';
@@ -8,9 +9,12 @@ import { GroupContactsDto } from 'src/types/dto/GroupContactsDto';
 
 export const GroupListPage = () => {
   
-  const groupsDataStore: GroupContactsDto[] = useSelector(selectGroupsData);
-  const isLoading = useSelector(selectGroupsIsLoading);
-  const error = useSelector(selectGroupsError);
+  // Получаем данные с пом. rtk query (без использования обычных redux-селекторов), включая встроенные флаги загрузки данных и значения ошибок, переименовывая необх. поля при деструктуризации
+  const { data: groupsDataStore, isLoading, error } = useGetGroupsQuery();
+
+  // const groupsDataStore: GroupContactsDto[] = useSelector(selectGroupsData);
+  // const isLoading = useSelector(selectGroupsIsLoading);
+  // const error = useSelector(selectGroupsError);
 
 
   if (isLoading)
@@ -20,7 +24,7 @@ export const GroupListPage = () => {
 
   return (
     <Row xxl={4}>
-      {groupsDataStore.map((groupContacts) => (
+      {groupsDataStore?.map((groupContacts) => (
         <Col key={groupContacts.id}>
           <GroupContactsCard groupContacts={groupContacts} withLink />
         </Col>
